@@ -1,8 +1,8 @@
 package com.snapci.microblog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
+import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -14,9 +14,9 @@ public class MicroBlogConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    private DatabaseConfiguration database = MicroBlogDatabaseConfiguration.create(System.getenv("DATABASE_URL"));
+    private DataSourceFactory database = MicroBlogDatabaseConfiguration.create(System.getenv("DATABASE_URL"));
 
-    public DatabaseConfiguration getDatabaseConfiguration() {
+    public DataSourceFactory getDatabaseConfiguration() {
         return database;
     }
 }
