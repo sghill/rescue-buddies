@@ -1,11 +1,17 @@
 package com.snapci.microblog;
 
+import com.snapci.microblog.jdbi.MicroBlogDAO;
+import com.snapci.microblog.jdbi.UserDAO;
+import com.snapci.microblog.resources.MicroBlogResource;
+import com.snapci.microblog.resources.UserResource;
 import io.dropwizard.Application;
-import io.dropwizard.db.DatabaseConfiguration;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.skife.jdbi.v2.DBI;
 
 public class MicroBlogService extends Application<MicroBlogConfiguration> {
     public static void main(String... args) throws Exception {
@@ -14,34 +20,22 @@ public class MicroBlogService extends Application<MicroBlogConfiguration> {
 
     @Override
     public void initialize(Bootstrap<MicroBlogConfiguration> bootstrap) {
-
+        bootstrap.addBundle(new MigrationsBundle<MicroBlogConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(MicroBlogConfiguration configuration) {
+                return configuration.getDatabaseConfiguration();
+            }
+        });
+        bootstrap.addBundle(new DBIExceptionsBundle());
     }
 
     @Override
-    public void run(MicroBlogConfiguration configuration, Environment environment) throws Exception {
-
+    public void run(MicroBlogConfiguration config, Environment environment) throws Exception {
+        DBIFactory factory = new DBIFactory();
+        DBI jdbi = factory.build(environment, config.getDatabaseConfiguration(), "postgresql");
+        UserDAO userDAO = jdbi.onDemand(UserDAO.class);
+        environment.jersey().register(new UserResource(userDAO));
+        MicroBlogDAO microBlogDAO = jdbi.onDemand(MicroBlogDAO.class);
+        environment.jersey().register(new MicroBlogResource(microBlogDAO, userDAO));
     }
-
-//    @Override
-//    public void initialize(Bootstrap bootstrap) {
-//        bootstrap.setName("microblog");
-//        bootstrap.addBundle(new MigrationsBundle<MicroBlogConfiguration>() {
-//            @Override
-//            public DatabaseConfiguration getDatabaseConfiguration(MicroBlogConfiguration config) {
-//                return config.getDatabaseConfiguration();
-//            }
-//        });
-//        bootstrap.addBundle(new DBIExceptionsBundle());
-//    }
-
-
-//    @Override
-//    public void run(MicroBlogConfiguration config, Environment environment) throws Exception {
-//        DBIFactory factory = new DBIFactory();
-//        DBI jdbi = factory.build(environment, config.getDatabaseConfiguration(), "postgresql");
-//        UserDAO userDAO = jdbi.onDemand(UserDAO.class);
-//        environment.addResource(new UserResource(userDAO));
-//        MicroBlogDAO microBlogDAO = jdbi.onDemand(MicroBlogDAO.class);
-//        environment.addResource(new MicroBlogResource(microBlogDAO, userDAO));
-//    }
 }
