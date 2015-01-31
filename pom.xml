@@ -42,6 +42,7 @@
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                     <compilerArgument>-Werror</compilerArgument>
+                    <generatedSourcesDirectory>${project.build.directory}/generated-sources</generatedSourcesDirectory>
                 </configuration>
             </plugin>
         </plugins>
