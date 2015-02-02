@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/rescuebuddies.jar db migrate rescuebuddies-application/rescuebuddies.yml && java $JAVA_OPTS -Ddw.http.port=$PORT -Ddw.http.adminPort=$PORT -jar target/rescuebuddies.jar server rescuebuddies-application/rescuebuddies.yml
+web: java $JAVA_OPTS -jar target/rescuebuddies.jar db migrate rescuebuddies-application/rescuebuddies.yml && java $JAVA_OPTS -Ddw.server.applicationConnectors[0].port=$PORT -Ddw.server.applicationConnectors[0].adminPort=$PORT -jar target/rescuebuddies.jar server rescuebuddies-application/rescuebuddies.yml
