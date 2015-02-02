@@ -10,9 +10,9 @@ features a full build that verifies the entire application in under a minute:
 * unit tests
 * uberjar packaging
 * acceptance tests with robotframework
-** packaged app deployed
-** in-memory database created
-** migrations applied to in-memory database
+    * packaged app deployed
+    * in-memory database created
+    * migrations applied to in-memory database
 
 Build
 -----
