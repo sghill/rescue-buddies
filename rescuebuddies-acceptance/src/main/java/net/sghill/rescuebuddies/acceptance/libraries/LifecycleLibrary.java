@@ -9,6 +9,12 @@ public class LifecycleLibrary extends InjectableLibrary {
 
     public void startApplication() {
         app.start();
+        try {
+            // server isn't starting on ci before test runs
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void applyDatabaseMigrations() {
