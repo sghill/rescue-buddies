@@ -4,3 +4,4 @@ dependency-reduced-pom.xml
 target
 reset.sh
 .vagrant
+logs/

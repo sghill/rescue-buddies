@@ -8,27 +8,32 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class RescueBuddiesDatabaseConfiguration {
-    final static Logger logger = LoggerFactory.getLogger(RescueBuddiesDatabaseConfiguration.class);
+    private final static Logger log = LoggerFactory.getLogger(RescueBuddiesDatabaseConfiguration.class);
 
     public static DataSourceFactory create(String databaseUrl) {
-        if (databaseUrl == null) {
-            throw new IllegalArgumentException("The DATABASE_URL environment variable must be set before running the app " +
-                    "example: DATABASE_URL='postgres://user:pass@localhost:5432/rescuebuddies'");
-        }
-        DataSourceFactory databaseConfiguration = null;
+        DataSourceFactory database = new DataSourceFactory();
         try {
             URI dbUri = new URI(databaseUrl);
-            String user = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            String url = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-            databaseConfiguration = new DataSourceFactory();
-            databaseConfiguration.setUser(user);
-            databaseConfiguration.setPassword(password);
-            databaseConfiguration.setUrl(url);
-            databaseConfiguration.setDriverClass("org.postgresql.Driver");
+            if ("postgres".equals(dbUri.getScheme())) {
+                String user = dbUri.getUserInfo().split(":")[0];
+                String password = dbUri.getUserInfo().split(":")[1];
+                String url = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+                database.setUser(user);
+                database.setPassword(password);
+                database.setUrl(url);
+                database.setDriverClass("org.postgresql.Driver");
+            } else if ("h2:mem:".equals(dbUri.getSchemeSpecificPart())) {
+                database.setUrl(databaseUrl);
+                database.setDriverClass("org.h2.Driver");
+                database.setUser("");
+                database.setPassword("");
+            } else {
+                throw new IllegalArgumentException("DATABASE_URL provided, but database is unsupported");
+            }
         } catch (URISyntaxException e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
+            throw new IllegalArgumentException("DATABASE_URL could not be parsed");
         }
-        return databaseConfiguration;
+        return database;
     }
 }

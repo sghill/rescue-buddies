@@ -6,3 +6,6 @@ server:
   adminConnectors:
     - type: http
       port: 8687
+db:
+  name: h2
+  url: 'jdbc:h2:mem:'

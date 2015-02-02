@@ -1,1 +1,9 @@
-dummy: dummy
+---
+db:
+  name: postgresql
+  url: DATABASE_URL ENV preferred
+logging:
+  level: WARN
+  loggers:
+    'com.yammer': INFO
+    'net.sghill.rescuebuddies': DEBUG

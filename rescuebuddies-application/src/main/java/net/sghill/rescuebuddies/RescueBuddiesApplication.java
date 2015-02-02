@@ -30,7 +30,7 @@ public class RescueBuddiesApplication extends Application<RescueBuddiesConfigura
     @Override
     public void run(RescueBuddiesConfiguration config, Environment environment) throws Exception {
         DBIFactory factory = new DBIFactory();
-        DBI jdbi = factory.build(environment, config.getDatabaseConfiguration(), "postgresql");
+        DBI jdbi = factory.build(environment, config.getDatabaseConfiguration(), config.dbName());
         BuddiesDAO buddiesDAO = jdbi.onDemand(BuddiesDAO.class);
         environment.jersey().register(new BuddiesResource(buddiesDAO));
     }

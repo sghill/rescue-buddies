@@ -22,8 +22,13 @@
     <dependencies>
         <dependency>
             <groupId>net.sghill.rescuebuddies</groupId>
+            <artifactId>rescuebuddies-application</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sghill.rescuebuddies</groupId>
             <artifactId>rescuebuddies-client</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.dagger</groupId>
@@ -32,6 +37,11 @@
         <dependency>
             <groupId>com.squareup.dagger</groupId>
             <artifactId>dagger-compiler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.robotframework</groupId>
+            <artifactId>robotframework</artifactId>
+            <version>${robot.version}</version>
         </dependency>
     </dependencies>
 
@@ -47,12 +57,12 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <dryrun>true</dryrun>
                             <testCasesDirectory>src/test/resources/acceptance</testCasesDirectory>
                             <warnOnSkippedFiles>true</warnOnSkippedFiles>
                             <excludes>
                                 <exclude>wip</exclude>
                             </excludes>
+                            <logLevel>DEBUG</logLevel>
                         </configuration>
                     </execution>
                 </executions>
