@@ -7,3 +7,11 @@ logging:
   loggers:
     'com.yammer': INFO
     'net.sghill.rescuebuddies': DEBUG
+server:
+  type: default
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
