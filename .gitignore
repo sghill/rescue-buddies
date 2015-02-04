@@ -1,7 +1,16 @@
-.idea
+# IntelliJ
+.idea/
 *.iml
+*.iws
+*.ipr
+
+# Build
 dependency-reduced-pom.xml
-target
-reset.sh
-.vagrant
-logs/
+target/
+
+# Provisioning
+.vagrant/
+
+# OS Artifacts
+.DS_Store
+*~
