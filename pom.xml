@@ -9,6 +9,8 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>Rescue Buddies (Parent)</name>
+    <description>App for fostering rescue dogs (buddies)</description>
+    <url>https://github.com/sghill/rescue-buddies</url>
 
     <modules>
         <module>rescuebuddies-acceptance</module>
@@ -16,6 +18,25 @@
         <module>rescuebuddies-api</module>
         <module>rescuebuddies-client</module>
     </modules>
+
+    <scm>
+        <url>https://github.com/sghill/rescue-buddies</url>
+        <connection>scm:git:git://github.com/sghill/rescue-buddies.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/sghill/rescue-buddies.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/sghill/rescue-buddies/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
