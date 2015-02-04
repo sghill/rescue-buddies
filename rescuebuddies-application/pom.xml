@@ -45,7 +45,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>${project.parent.build.directory}/rescuebuddies.jar</outputFile>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
