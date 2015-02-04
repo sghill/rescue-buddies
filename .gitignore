@@ -14,3 +14,8 @@ target/
 # OS Artifacts
 .DS_Store
 *~
+
+# Robot Output
+log.html
+output.xml
+report.html
