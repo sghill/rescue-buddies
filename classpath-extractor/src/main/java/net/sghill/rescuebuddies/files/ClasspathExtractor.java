@@ -1,10 +1,14 @@
 package net.sghill.rescuebuddies.files;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URI;
 import java.util.Objects;
 import java.util.Set;
 
 public class ClasspathExtractor {
+    private static final Logger LOG = LoggerFactory.getLogger(ClasspathExtractor.class);
     private final UriValidator validator;
     private final ValidationHandler handler;
     private final Copier copier;
@@ -25,5 +29,6 @@ public class ClasspathExtractor {
         Set<Error> errors = validator.validate(source);
         handler.handle(errors);
         copier.copy(source, destination);
+        LOG.info("Copied '{}' to '{}'", source, destination);
     }
 }
