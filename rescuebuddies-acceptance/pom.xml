@@ -25,6 +25,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.sghill.rescuebuddies</groupId>
+            <artifactId>classpath-extractor</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.robotframework</groupId>
             <artifactId>robotframework</artifactId>
             <version>${robot.version}</version>

@@ -17,6 +17,7 @@
         <module>rescuebuddies-application</module>
         <module>rescuebuddies-api</module>
         <module>rescuebuddies-client</module>
+        <module>classpath-extractor</module>
     </modules>
 
     <scm>

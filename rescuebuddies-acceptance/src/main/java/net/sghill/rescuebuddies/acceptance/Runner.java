@@ -1,14 +1,14 @@
 package net.sghill.rescuebuddies.acceptance;
 
 import com.google.common.io.Resources;
+import net.sghill.rescuebuddies.files.ClasspathExtractor;
 import org.robotframework.RobotFramework;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashMap;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 public class Runner {
@@ -19,34 +19,10 @@ public class Runner {
     }
 
     public Path relocateAcceptanceTests() throws IOException, URISyntaxException {
-
         String temp = System.getProperty("java.io.tmpdir");
         final Path target = Paths.get(temp, UUID.randomUUID().toString(), "Acceptance");
-
-
-        URI uri = Resources.getResource("acceptance").toURI();
-        String[] split = uri.toString().split("!");
-        try (FileSystem fileSystem = FileSystems.newFileSystem(URI.create(split[0]), new HashMap<String, String>())) {
-            Path path = fileSystem.getPath(split[1]);
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-                private Path currentHead = target;
-
-                @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    Path directoryToCreate = Paths.get(dir.getFileName().toString()); // avoid filesystem mismatch
-                    currentHead = currentHead.resolve(directoryToCreate);
-                    Files.createDirectories(currentHead);
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Path fileToCreate = Paths.get(file.getFileName().toString());
-                    Files.copy(file, currentHead.resolve(fileToCreate));
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        }
+        URI source = Resources.getResource("acceptance").toURI();
+        new ClasspathExtractor().extractFromArchive(source, target.toUri());
         return target;
     }
 }
