@@ -9,6 +9,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import net.sghill.rescuebuddies.jdbi.BuddiesDAO;
 import net.sghill.rescuebuddies.resources.BuddiesResource;
+import net.sghill.rescuebuddies.resources.FosterParentResource;
 import org.skife.jdbi.v2.DBI;
 
 public class RescueBuddiesApplication extends Application<RescueBuddiesConfiguration> {
@@ -33,5 +34,6 @@ public class RescueBuddiesApplication extends Application<RescueBuddiesConfigura
         DBI jdbi = factory.build(environment, config.getDatabaseConfiguration(), config.dbName());
         BuddiesDAO buddiesDAO = jdbi.onDemand(BuddiesDAO.class);
         environment.jersey().register(new BuddiesResource(buddiesDAO));
+        environment.jersey().register(new FosterParentResource());
     }
 }

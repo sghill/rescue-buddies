@@ -18,27 +18,24 @@ public class RescueBuddiesClientModule {
                 .setLogLevel(RestAdapter.LogLevel.BASIC);
     }
 
-    @Provides RescueBuddiesService providesRescueBuddiesService(RestAdapter.Builder adapter) {
+    @Provides RescueBuddiesService providesRescueBuddiesService(RestAdapter.Builder adapter, Endpoint endpoint) {
         return adapter
-                .setEndpoint(serviceEndpoint())
+                .setEndpoint(endpoint)
                 .build()
                 .create(RescueBuddiesService.class);
     }
 
     @Provides RescueBuddiesAdminService providesRescueBuddiesAdminService(RestAdapter.Builder adapter) {
+        String baseUrl = System.getProperty("rb.adminService.baseUrl", "");
         return adapter
-                .setEndpoint(adminServiceEndpoint())
+                .setEndpoint(Endpoints.newFixedEndpoint(baseUrl))
                 .build()
                 .create(RescueBuddiesAdminService.class);
     }
 
-    private Endpoint serviceEndpoint() {
+    @Provides Endpoint providesServiceEndpoint() {
         String baseUrl = System.getProperty("rb.service.baseUrl", "");
         return Endpoints.newFixedEndpoint(baseUrl);
     }
 
-    private Endpoint adminServiceEndpoint() {
-        String baseUrl = System.getProperty("rb.adminService.baseUrl", "");
-        return Endpoints.newFixedEndpoint(baseUrl);
-    }
 }

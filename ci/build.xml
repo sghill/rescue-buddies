@@ -1,0 +1,50 @@
+<project name="rescuebuddies">
+    <property environment="env"/>
+    <property name="rb.home" location="${basedir}/.."/>
+    <property name="rb.app" value="${rb.home}/rescuebuddies-application/target/rescuebuddies-application-0.0.1-SNAPSHOT.jar"/>
+    <property name="rb.acceptance" value="${rb.home}/rescuebuddies-acceptance/target/rescuebuddies-acceptance-0.0.1-SNAPSHOT.jar"/>
+
+    <target name="package">
+        <mvn-clean-package module="${rb.home}"/>
+    </target>
+
+    <target name="acceptance">
+        <property name="port" value="9000"/>
+        <property name="admin.port" value="9001"/>
+        <parallel failonany="true">
+            <daemons>
+                <java jar="${rb.app}" fork="true" inputstring="">
+                    <sysproperty key="dw.server.applicationConnectors[0].port" value="${port}"/>
+                    <sysproperty key="dw.server.adminConnectors[0].port" value="${admin.port}"/>
+                    <arg value="server"/>
+                    <arg value="${basedir}/acceptance.yml"/>
+                </java>
+            </daemons>
+            <sequential>
+                <waitfor maxwait="30" maxwaitunit="second">
+                    <http url="http://localhost:${admin.port}/ping"/>
+                </waitfor>
+                <java jar="${rb.acceptance}" fork="true" inputstring="" failonerror="true">
+                    <sysproperty key="rb.service.baseUrl" value="http://localhost:${port}"/>
+                    <sysproperty key="rb.adminService.baseUrl" value="http://localhost:${admin.port}"/>
+                </java>
+            </sequential>
+        </parallel>
+    </target>
+
+    <macrodef name="mvn-clean-package">
+        <attribute name="module"/>
+        <sequential>
+            <property name="options" value="-T1C -q clean package"/>
+            <property name="timeout" value="60000"/>
+            <exec executable="cmd" osfamily="windows" dir="@{module}" failonerror="true" timeout="${timeout}">
+                <arg value="/C"/>
+                <arg value="${env.M2_HOME}/bin/mvn"/>
+                <arg line="${options}"/>
+            </exec>
+            <exec executable="${env.M2_HOME}/bin/mvn" osfamily="unix" dir="@{module}" failonerror="true" timeout="${timeout}">
+                <arg line="${options}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+</project>

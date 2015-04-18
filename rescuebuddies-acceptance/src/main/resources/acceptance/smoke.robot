@@ -1,5 +1,5 @@
 *** Settings ***
-Library    net.sghill.rescuebuddies.acceptance.libraries.AdminLibrary
+Resource    libraries.txt
 
 *** Test Cases ***
 Ping

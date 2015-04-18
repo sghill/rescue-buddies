@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Runner {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Path target = new Runner().relocateAcceptanceTests();
-        RobotFramework.run(new String[] { "run", target.toString() });
+        RobotFramework.main(new String[]{"run", target.toString()});
     }
 
     public Path relocateAcceptanceTests() throws IOException, URISyntaxException {

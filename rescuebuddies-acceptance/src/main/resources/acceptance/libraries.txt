@@ -1,0 +1,5 @@
+*** Settings ***
+Library    net.sghill.rescuebuddies.acceptance.libraries.AdminLibrary
+Library    net.sghill.rescuebuddies.acceptance.libraries.FosterParentLibrary
+Library    net.sghill.rescuebuddies.acceptance.libraries.GenerationLibrary
+Library    net.sghill.rescuebuddies.acceptance.libraries.ResponseLibrary
